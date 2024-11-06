@@ -163,7 +163,11 @@ def display_company_data(data):
     else:
         st.write("No FAQs available.")
 
-
+    if 'similarCompanies' in data:
+        st.subheader("Similar Companies")
+        similar_companies = data['similarCompanies']
+        for company in similar_companies:
+            st.markdown(f"- **{company['name']}**: {company['industry']}")
 def main():
     # Load local data for backup (optional)
     # local_data = load_json_data()
