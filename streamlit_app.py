@@ -9,9 +9,11 @@ def clean_html(raw_html):
     return soup.get_text(separator="\n").strip()
 
 session = requests.Session()
+# print(session.cookies.get_dict())
 
 # Make an initial request to capture cookies
 response = session.get('https://www.ambitionbox.com/')
+print(response.cookies.get_dict())
 headers = {}
 headers["User-Agent"] = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"
 headers["accept"] = "*/*"
@@ -23,7 +25,7 @@ def fetch_company_data(company_name):
     print("running")
     """Fetch company data from an external source."""
     company_name = company_name.lower().replace(" ", "-")
-    AMBITION_BOX_URI = f"https://www.ambitionbox.com/_next/data/HK3rQbSwgvzPDSMVXAAfT/overview/{company_name}-overview.json"
+    AMBITION_BOX_URI = f"https://www.ambitionbox.com/_next/data/JrkcL-D__YMvcB89i-DPc//overview/{company_name}-overview.json"
     response = session.get(AMBITION_BOX_URI, headers=headers)
     data = {}
     if response.status_code == 200:
