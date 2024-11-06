@@ -25,7 +25,7 @@ def fetch_company_data(company_name):
     print("running")
     """Fetch company data from an external source."""
     company_name = company_name.lower().replace(" ", "-")
-    AMBITION_BOX_URI = f"https://www.ambitionbox.com/_next/data/JrkcL-D__YMvcB89i-DPc//overview/{company_name}-overview.json"
+    AMBITION_BOX_URI = f"https://www.ambitionbox.com/_next/data/iKqi40DpIVzeQHIh6nyeO/overview/{company_name}-overview.json"
     response = session.get(AMBITION_BOX_URI, headers=headers)
     data = {}
     if response.status_code == 200:
