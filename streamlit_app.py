@@ -1,19 +1,15 @@
 import streamlit as st
 import pandas as pd
 import requests
+import json
 from bs4 import BeautifulSoup
 
 def clean_html(raw_html):
-    # Using BeautifulSoup to clean HTML tags
     soup = BeautifulSoup(raw_html, "html.parser")
     return soup.get_text(separator="\n").strip()
 
 session = requests.Session()
-# print(session.cookies.get_dict())
 
-# Make an initial request to capture cookies
-response = session.get('https://www.ambitionbox.com/')
-print(response.cookies.get_dict())
 headers = {}
 headers["User-Agent"] = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"
 headers["accept"] = "*/*"
@@ -21,11 +17,30 @@ headers["accept-encoding"] = "gzip, deflate, br, zstd"
 headers["accept-language"] = "en-GB,en-US;q=0.9,en;q=0.8"
 headers["cache-control"] = "no-cache"
 
+resp = session.get('http://www.ambitionbox.com/overview/google-overview', headers=headers)
+
+def find_build_id(response):
+    soup = BeautifulSoup(response.text, 'html.parser')
+    script_tag = soup.find('script', id="__NEXT_DATA__")
+    if script_tag:
+        json_data = json.loads(script_tag.string)
+        
+        build_id = json_data.get('buildId')
+        
+        if build_id:
+            return build_id
+        else:
+            return None
+    else:
+        return None
+    
+BUILD_ID = find_build_id(resp)
+
 def fetch_company_data(company_name):
     print("running")
     """Fetch company data from an external source."""
     company_name = company_name.lower().replace(" ", "-")
-    AMBITION_BOX_URI = f"https://www.ambitionbox.com/_next/data/iKqi40DpIVzeQHIh6nyeO/overview/{company_name}-overview.json"
+    AMBITION_BOX_URI = f"https://www.ambitionbox.com/_next/data/{BUILD_ID}/overview/{company_name}-overview.json"
     response = session.get(AMBITION_BOX_URI, headers=headers)
     data = {}
     if response.status_code == 200:
