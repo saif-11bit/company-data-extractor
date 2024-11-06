@@ -50,6 +50,7 @@ def display_company_data(data):
     - **CEO**: {meta_info.get('ceo', 'N/A')}
     - **Founded Year**: {meta_info.get('foundedYear', 'N/A')}
     - **Global Employee Count**: {meta_info.get('globalEmployeeCount', 'N/A')}
+    - **Indian Employee Count**: {meta_info.get('indianEmployeeCountRange', 'N/A')}
     - **Type of Company**: {', '.join([type['name'] for type in meta_info.get('typeOfCompany', [])]) or 'N/A'}
     - **Ownership**: {meta_info.get('ownership', {}).get('name', 'N/A')}
     """)
